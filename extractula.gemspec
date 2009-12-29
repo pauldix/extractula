@@ -11,11 +11,13 @@ Gem::Specification.new do |s|
   s.files = [
     "lib/extractula.rb",
     "lib/extractula/extracted_content.rb",
+    "lib/extractula/dom_extractor.rb",
     "README.textile",
     "spec/spec.opts",
     "spec/spec_helper.rb",
     "spec/extractula_spec.rb",
-    "spec/extractula/extracted_content_spec.rb"]
+    "spec/extractula/extracted_content_spec.rb",
+    "spec/extractula/dom_extractor_spec.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/pauldix/extractula}
   s.require_paths = ["lib"]
