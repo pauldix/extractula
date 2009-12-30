@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__)) unless $LOAD_PATH.include?(File.dirna
 module Extractula; end
 
 require 'nokogiri'
+require 'domainatrix'
 require 'loofah'
 require 'extractula/extracted_content'
 require 'extractula/extractor'
