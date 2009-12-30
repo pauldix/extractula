@@ -49,7 +49,7 @@ class Extractula::DomExtractor
     end.compact.uniq
 
     fragment = candidate_nodes.detect {|n| n[:text_size] > 200}[:parent].inner_html.strip rescue ""
-    Loofah.fragment(fragment).scrub!(:prune).to_s
+#    Loofah.fragment(fragment).scrub!(:prune).to_s
   end
 
   def summary
