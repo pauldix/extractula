@@ -17,7 +17,14 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/extractula_spec.rb",
     "spec/extractula/extracted_content_spec.rb",
-    "spec/extractula/dom_extractor_spec.rb"]
+    "spec/extractula/dom_extractor_spec.rb",
+    "spec/test-files/10-stunning-web-site-prototype-sketches.html",
+    "spec/test-files/totlol-youtube.html",
+    "spec/test-files/typhoeus-the-best-ruby-http-client-just-got-better.html",
+    "spec/test-files/ustream-new-years-eve.html",
+    "spec/test-files/weather-channel-marriage-proposal-touching-with-a-chance-of-viral-status-video.html",
+    "spec/test-files/nytimes.html",
+    "spec/test-files/nytimes_story.html"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/pauldix/extractula}
   s.require_paths = ["lib"]
@@ -30,13 +37,10 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, ["> 0.0.0"])
-      s.add_runtime_dependency(%q<loofah>, ["> 0.4.0"])
     else
       s.add_dependency(%q<nokogiri>, ["> 0.0.0"])
-      s.add_dependency(%q<loofah>, ["> 0.4.0"])
     end
   else
     s.add_dependency(%q<nokogiri>, ["> 0.0.0"])
-    s.add_dependency(%q<loofah>, ["> 0.4.0"])
   end
 end
