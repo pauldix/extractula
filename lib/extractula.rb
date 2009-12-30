@@ -5,6 +5,7 @@ module Extractula; end
 require 'nokogiri'
 require 'loofah'
 require 'extractula/extracted_content'
+require 'extractula/extractor'
 require 'extractula/dom_extractor'
 
 module Extractula
