@@ -79,4 +79,31 @@ describe "extraction cases" do
       @extracted_content.content.should == Nokogiri::HTML(read_test_file("10-stunning-web-site-prototype-sketches.html")).css("div.KonaBody").first.inner_html.strip
     end
   end
+
+  describe "extracting from nytimes" do
+    before(:all) do
+      @front_page = Extractula::DomExtractor.new.extract(
+        "http://www.nytimes.com/",
+        read_test_file("nytimes.html"))
+      @story_page = Extractula::DomExtractor.new.extract(
+        "http://www.nytimes.com/2009/12/31/world/asia/31history.html?_r=1&hp",
+        read_test_file("nytimes_story.html"))
+    end
+
+    it "extracts the title" do
+      @front_page.title.should == "The New York Times - Breaking News, World News & Multimedia"
+    end
+
+    it "extracts the content" do
+      @front_page.content.should == Nokogiri::HTML(read_test_file("nytimes.html")).css("div.story").first.inner_html.strip
+    end
+
+    it "extracts a story title" do
+      @story_page.title.should == "Army Historians Document Early Missteps in Afghanistan - NYTimes.com"
+    end
+
+    it "extracts the story content" do
+      @story_page.content.should == Nokogiri::HTML(read_test_file("nytimes_story.html")).css("nyt_text").first.inner_html.strip
+    end
+  end
 end
