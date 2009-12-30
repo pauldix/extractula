@@ -1,0 +1,97 @@
+h1. Extractula
+
+"http://github.com/pauldix/extractula":http://github.com/pauldix/extractula
+
+h2. Summary
+
+Extracts content like title, summary, and images from web pages like Dracula extracts blood: with care and finesse.
+
+h2. Description
+
+Extractula attempts to extract the core content from a web page. For a news article or blog post this would be the content of the article itself. For a github project this would be the main README file. The library also has logic for writing your own custom extractors. This is useful if you want to write extractors for popular sites that you want to build custom support for.
+
+h2. Installation
+
+<pre>
+  gem install extractula --source http://gemcutter.org
+</pre>
+
+h2. Use
+
+<pre>
+require 'extractula'
+some_html = "..." # get some html to extract, yo!
+
+extracted_content = Extractula.extract(url, some_html)
+extracted_content.title       # pulled from the page
+extracted_content.url         # what you passed in
+extracted_content.content     # the main content body (article, blog post, etc)
+extracted_content.summary     # an automatically generated plain text summary of the content
+extracted_content.image_urls  # the urls for images that appear in the content
+extracted_content.video_embed # the embed code if a video is embedded in the content
+
+Extractula.add_extractor(SomeClass) # so you can add a custom extractor
+</pre>
+
+h3. Custom Extractors
+
+The "Use" section showed adding a custom extractor. This should be a class that at a minimum implements the following methods.
+
+<pre>
+class MyCustomExtractor
+  def self.can_extract?(url, html)
+  end
+
+  def extract(url, html)
+    # should return a Extractula::ExtractedContent object
+  end
+end
+</pre>
+
+Notice that can_extract? is a class method while extract is an instance method. Extract should return an ExtractedContent object.
+
+h3. ExtractedContent
+
+The ExtractedContent object holds the results of an extraction. It additionally has methods to automatically generate a summary, image_urls, and video_embed code from the content. If you implement a custom extractor and want to provide the summary, image_urls, and video_embed, simply pass those values into the constructor for ExtractedContent. Here are some examples:
+
+<pre>
+extracted_content = ExtractedContent.new(:url => "http://pauldix.net", :content => "...some content...")
+extracted_content.summary     # auto-generated from content
+extracted_content.image_urls  # auto-generated from content
+extracted_content.video_embed # auto-generated from content
+
+extracted_content = ExtractedContent.new(:url => "http://pauldix.net", :content => "...some content...",
+  :summary => "a summary", :image_urls => ["foo.jpg"], :video_embed => "blah")
+extracted_content.summary     # "a summary"
+extracted_content.image_urls  # ["foo.jpg"]
+extracted_content.video_embed # "blah"
+</pre>
+
+Zero, one, or more of the values can be passed into the ExtractedContent constructor. It will auto-generate ones not passed in and keep the others.
+
+h2. LICENSE
+
+(The MIT License)
+
+Copyright (c) 2009:
+
+"Paul Dix":http://pauldix.net
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
