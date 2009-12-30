@@ -15,7 +15,9 @@ describe Extractula::Extractor do
     it "should give an empty ExtractedContent object" do
       content = Extractula::Extractor.new.extract(@url, @html)
       content.title.should be_nil
-      content.summary.should be_nil
+      content.summary.should be_empty
+      content.image_urls.should be_empty
+      content.video_embed.should be_nil
     end
   end
   
