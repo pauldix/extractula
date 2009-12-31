@@ -21,7 +21,9 @@ module Extractula
   end
 
   def self.extract(url, html)
-    extractor = @extractors.detect {|e| e.can_extract? url, html} || DomExtractor
-    extractor.new.extract(url, html)
+    parsed_url = Domainatrix.parse(url)
+    parsed_html = Nokogiri::HTML(html)
+    extractor = @extractors.detect {|e| e.can_extract? parsed_url, parsed_html} || DomExtractor
+    extractor.new(parsed_url, parsed_html).extract
   end
 end
