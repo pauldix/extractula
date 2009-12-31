@@ -2,12 +2,12 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe "extractula" do
   it "can add custom extractors" do
-    custom_extractor = Class.new do
+    custom_extractor = Class.new(Extractula::Extractor) do
       def self.can_extract? url, html
         true
       end
 
-      def extract url, html
+      def extract
         Extractula::ExtractedContent.new :url => "custom extractor url", :summary => "my custom extractor"
       end
     end
@@ -20,12 +20,12 @@ describe "extractula" do
   end
 
   it "skips custom extractors that can't extract the passed url and html" do
-    custom_extractor = Class.new do
+    custom_extractor = Class.new(Extractula::Extractor) do
       def self.can_extract? url, html
         false
       end
 
-      def extract url, html
+      def extract
         Extractula::ExtractedContent.new :url => "this url", :summary => "this summary"
       end
     end

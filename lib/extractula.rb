@@ -5,10 +5,6 @@ module Extractula; end
 require 'nokogiri'
 require 'domainatrix'
 
-require 'extractula/extracted_content'
-require 'extractula/extractor'
-require 'extractula/dom_extractor'
-
 module Extractula
   @extractors = []
 
@@ -27,3 +23,7 @@ module Extractula
     extractor.new(parsed_url, parsed_html).extract
   end
 end
+
+require 'extractula/extracted_content'
+require 'extractula/extractor'
+require 'extractula/dom_extractor'

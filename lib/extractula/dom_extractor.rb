@@ -1,16 +1,23 @@
 # a basic dom based extractor. it's a generic catch all
 class Extractula::DomExtractor
-  def extract url, html
-    @doc = Nokogiri::HTML(html)
-    extracted = Extractula::ExtractedContent.new :url => url, :title => title, :content => content
+  
+  attr_reader :url, :html
+  
+  def initialize url, html
+    @url  = url.is_a?(Domainatrix::Url) ? url : Domainatrix.parse(url)
+    @html = html.is_a?(Nokogiri::HTML::Document) ? html : Nokogiri::HTML(html)
+  end
+  
+  def extract
+    extracted = Extractula::ExtractedContent.new :url => url.url, :title => title, :content => content
   end
 
   def title
-    @title ||= @doc.search("//title").first.text.strip rescue nil
+    @title ||= html.search("//title").first.text.strip rescue nil
   end
 
   def content
-    candidate_nodes = @doc.search("//div|//p|//br").collect do |node|
+    candidate_nodes = html.search("//div|//p|//br").collect do |node|
       parent = node.parent
       if node.node_name == 'div'
         text_size = calculate_children_text_size(parent, "div")

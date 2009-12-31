@@ -53,7 +53,7 @@ module Extractula
     end
 
     def title
-      html.search(title_path).first.text.strip rescue nil
+      @title ||= html.search(title_path).first.text.strip rescue nil
     end
 
     def content_path
@@ -61,7 +61,7 @@ module Extractula
     end
     
     def content
-      html.search(content_path).first.text.strip rescue nil
+      @content ||= html.search(content_path).first.text.strip rescue nil
     end
 
     def summary_path
@@ -69,12 +69,14 @@ module Extractula
     end
 
     def summary
-      if summary_path
+      @summary ||= if summary_path
         html.search(summary_path).first.text.strip rescue nil
       else
-        content_fragment  = content.slice(0, 350)
-        sentence_break    = content_fragment.rindex(/\?|\.|\!|\;/)
-        sentence_break ? content_fragment.slice(0, sentence_break + 1) : content_fragment
+        if content
+          content_fragment  = content.slice(0, 350)
+          sentence_break    = content_fragment.rindex(/\?|\.|\!|\;/)
+          sentence_break ? content_fragment.slice(0, sentence_break + 1) : content_fragment
+        end
       end
     end
 
@@ -83,7 +85,7 @@ module Extractula
     end
     
     def image_urls
-      html.search(image_urls_path).collect { |img| img['src'].strip } rescue []
+      @image_urls ||= html.search(image_urls_path).collect { |img| img['src'].strip } rescue []
     end
     
     def video_embed_path
@@ -91,7 +93,7 @@ module Extractula
     end
     
     def video_embed
-      html.search(video_embed_path).collect { |embed| embed.to_html }.first rescue nil 
+      @video_embed ||= html.search(video_embed_path).collect { |embed| embed.to_html }.first rescue nil 
     end
     
   end
