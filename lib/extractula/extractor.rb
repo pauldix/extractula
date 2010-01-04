@@ -17,20 +17,32 @@ module Extractula
       @extractable_domain ? @extractable_domain == url.domain : false
     end
     
-    %w{ title_path content_path summary_path image_urls_path video_embed_path }.each do |path|
+    %w{ title content summary image_urls video_embed }.each do |field|
       class_eval <<-EOS
-        def self.#{path}(path = nil)
-          @#{path} = path if path
-          @#{path}
+        def self.#{field}_path(path = nil, attrib = nil)
+          if path
+            @#{field}_path = path
+            @#{field}_attr = attrib || :text
+          end
+          @#{field}_path
         end
         
-        def #{path}
-          self.class.#{path}
+        def self.#{field}_attr(attrib = nil)
+          @#{field}_attr = attrib if attrib
+          @#{field}_attr
+        end
+        
+        def #{field}_path
+          self.class.#{field}_path
+        end
+        
+        def #{field}_attr
+          self.class.#{field}_attr
         end
       EOS
     end
     
-    attr_reader :original_url, :url, :html, :content
+    attr_reader :url, :html, :content
     
     def initialize url, html
       @url  = url.is_a?(Domainatrix::Url) ? url : Domainatrix.parse(url)
@@ -48,52 +60,50 @@ module Extractula
       })
     end
 
-    def title_path
-      self.class.title_path
-    end
-
     def title
-      @title ||= html.search(title_path).first.text.strip rescue nil
+      @title ||= content_at(title_path, title_attr)
     end
 
-    def content_path
-      self.class.content_path
-    end
-    
     def content
-      @content ||= html.search(content_path).first.text.strip rescue nil
-    end
-
-    def summary_path
-      self.class.summary_path
+      @content ||= content_at(content_path, content_attr)
     end
 
     def summary
-      @summary ||= if summary_path
-        html.search(summary_path).first.text.strip rescue nil
-      else
-        if content
-          content_fragment  = content.slice(0, 350)
-          sentence_break    = content_fragment.rindex(/\?|\.|\!|\;/)
-          sentence_break ? content_fragment.slice(0, sentence_break + 1) : content_fragment
-        end
-      end
+      @summary ||= summary_path ? content_at(summary_path, summary_attr) : excerpt(content)
     end
 
-    def image_urls_path
-      self.class.image_urls_path
-    end
-    
     def image_urls
       @image_urls ||= html.search(image_urls_path).collect { |img| img['src'].strip } rescue []
     end
     
-    def video_embed_path
-      self.class.video_embed_path
-    end
-    
     def video_embed
       @video_embed ||= html.search(video_embed_path).collect { |embed| embed.to_html }.first rescue nil 
+    end
+    
+    private
+    
+    def content_at(path, attrib)
+      if node = html.at(path)
+        if attrib == :text
+          node.text.strip
+        else
+          if content = node[attrib]
+            content.strip
+          else
+            nil
+          end
+        end
+      else
+        nil
+      end
+    end
+    
+    def excerpt(text)
+      if text
+        content_fragment  = text.slice(0, 350)
+        sentence_break    = content_fragment.rindex(/\?|\.|\!|\;/)
+        sentence_break ? content_fragment.slice(0, sentence_break + 1) : content_fragment
+      end
     end
     
   end
