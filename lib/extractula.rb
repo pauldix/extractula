@@ -22,6 +22,13 @@ module Extractula
     extractor = @extractors.detect {|e| e.can_extract? parsed_url, parsed_html} || DomExtractor
     extractor.new(parsed_url, parsed_html).extract
   end
+  
+  def self.custom_extractor(config = {})
+    klass = Class.new(Extractula::Extractor)
+    klass.include(Extractula::OEmbed) if config.delete(:oembed)
+    config.each { |option, args| klass.__send__(option, *args) }
+    klass
+  end
 end
 
 require 'extractula/extracted_content'
