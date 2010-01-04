@@ -3,9 +3,9 @@
 module Extractula
   class DinosaurComics < Extractula::Extractor
     
+    use_defaults    :title
     domain          'qwantz'
-    title_path      'title'
     content_path    'img.comic', 'title'
-    image_urls_path 'img.comic'    
+    image_urls_path 'img.comic' 
   end
 end
