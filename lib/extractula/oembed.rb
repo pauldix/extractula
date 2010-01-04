@@ -46,19 +46,7 @@ module Extractula
       
       def oembed_format_param_required?
         @oembed_format_param_required
-      end
-      
-      def title
-        oembed.title
-      end
-      
-      def image_urls
-        [ oembed.url ] if oembed.type == 'photo'
-      end
-      
-      def video_embed
-        oembed.html
-      end
+      end      
     end
     
     module InstanceMethods
@@ -101,6 +89,18 @@ module Extractula
         request += "&maxwidth=#{oembed_max_width}" if oembed_max_width
         request += "&maxheight=#{oembed_max_height}" if oembed_max_height
         request
+      end
+      
+      def title
+        oembed.title
+      end
+      
+      def image_urls
+        [ oembed.url ] if oembed.type == 'photo'
+      end
+      
+      def video_embed
+        oembed.html
       end
     end
     

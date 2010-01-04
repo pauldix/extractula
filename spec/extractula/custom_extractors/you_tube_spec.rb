@@ -25,7 +25,7 @@ describe "extracting from a YouTube page" do
   end
 
   it "extracts the content" do
-    @extracted_content.content.should == %Q{A Baby Panda Sneezing\n\nhttp://www.twitter.com/_jam...}
+    @extracted_content.content.should == "A Baby Panda Sneezing\n\nhttp://www.twitter.com/_jam..."
   end
 
   it "extracts the main video" do

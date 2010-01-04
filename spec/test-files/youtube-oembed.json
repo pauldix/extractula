@@ -1,13 +1,12 @@
-
 {
-    "provider_url": "http://www.youtube.com/",
-     "title": "The Sneezing Baby Panda",
-     "html": "<object width=\"425\" height=\"344\"><param name=\"movie\" value=\"http://www.youtube.com/v/FzRH3iTQPrk&fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/FzRH3iTQPrk&fs=1\" type=\"application/x-shockwave-flash\" width=\"425\" height=\"344\" allowscriptaccess=\"always\" allowfullscreen=\"true\"></embed></object>",
-     "author_name": "jimvwmoss",
-     "height": 344,
-     "width": 425,
-     "version": "1.0",
-     "author_url": "http://www.youtube.com/user/jimvwmoss",
-     "provider_name": "YouTube",
-     "type": "video"
+  "provider_url": "http://www.youtube.com/",
+  "title": "The Sneezing Baby Panda",
+  "html": "<object width=\"425\" height=\"344\"><param name=\"movie\" value=\"http://www.youtube.com/v/FzRH3iTQPrk&fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/FzRH3iTQPrk&fs=1\" type=\"application/x-shockwave-flash\" width=\"425\" height=\"344\" allowscriptaccess=\"always\" allowfullscreen=\"true\"></embed></object>",
+  "author_name": "jimvwmoss",
+  "height": 344,
+  "width": 425,
+  "version": "1.0",
+  "author_url": "http://www.youtube.com/user/jimvwmoss",
+  "provider_name": "YouTube",
+  "type": "video"
 }
