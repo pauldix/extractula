@@ -75,14 +75,6 @@ module Extractula
         @oembed
       end
       
-      def oembed_params
-        params = { :url => url.url, :endpoint => oembed_endpoint }
-        params.merge!({ :format => oembed_format })
-        params.merge!({ :format_param => oembed_format_param })
-        params.merge!({ :max_width => oembed_max_width}) if oembed_max_width
-        params.merge!({ :max_height => oembed_max_height}) if oembed_max_height
-      end
-      
       def oembed_request
         request = "#{oembed_endpoint}?url=#{url.url}"
         request += "&format=json" if oembed_format_param_required?
