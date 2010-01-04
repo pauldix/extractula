@@ -83,17 +83,10 @@ module Extractula
     private
     
     def content_at(path, attrib)
-      if node = html.at(path)
-        if attrib == :text
-          node.text.strip
-        else
-          if content = node[attrib]
-            content.strip
-          else
-            nil
-          end
-        end
-      else
+      begin
+        node = html.at(path)
+        attrib == :text ? node.text.strip : node[attrib].strip
+      rescue
         nil
       end
     end
