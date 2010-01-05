@@ -20,13 +20,7 @@ module Extractula
       end
     end
     
-    module ClassMethods
-      OEMBED_DEFAULTS = {
-        :title        => Proc.new { oembed.title },
-        :image_urls   => Proc.new { [ oembed.url ] if oembed.type == 'photo' },
-        :video_embed  => Proc.new { oembed.html }
-      }
-      
+    module ClassMethods 
       def oembed_endpoint(url = nil)
         if url
           @oembed_endpoint = url
@@ -52,10 +46,6 @@ module Extractula
       
       def oembed_format_param_required?
         @oembed_format_param_required
-      end
-      
-      def use_oembed_defaults *fields
-        fields.each { |field| define_method field, &OEMBED_DEFAULTS[field] }
       end
     end
     
@@ -91,6 +81,18 @@ module Extractula
         request += "&maxwidth=#{oembed_max_width}" if oembed_max_width
         request += "&maxheight=#{oembed_max_height}" if oembed_max_height
         request
+      end
+      
+      def title
+        oembed.title
+      end
+      
+      def image_urls
+        [ oembed.url ] if oembed.type == 'photo'
+      end
+      
+      def video_embed
+        oembed.html
       end
     end
     
