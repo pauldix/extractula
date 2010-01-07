@@ -46,4 +46,11 @@ describe "extracted content" do
       extracted.video_embed.should == "<object width=\"425\" height=\"344\"><param name=\"movie\" value=\"http://www.youtube.com/v/0dHTIGas4CA&amp;color1=0x3a3a3a&amp;color2=0x999999&amp;hl=en_US&amp;feature=player_embedded&amp;fs=1\">\n<param name=\"allowFullScreen\" value=\"true\">\n<param name=\"allowScriptAccess\" value=\"always\">\n<embed wmode=\"opaque\" src=\"http://www.youtube.com/v/0dHTIGas4CA&amp;color1=0x3a3a3a&amp;color2=0x999999&amp;hl=en_US&amp;feature=player_embedded&amp;fs=1\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowscriptaccess=\"always\" width=\"425\" height=\"344\"></embed></object>"
     end
   end
+
+  describe "some regressions" do
+    it "doesn't error with undefined method 'node_name' for nil:NilClass when looking at <br /> elements" do
+      extracted = Extractula::Extractor.new("http://viceland.com/caprica/", read_test_file("node-name-error.html")).extract
+      extracted.title.should == "Syfy + Motherboard.tv Caprica Screenings Contest"
+    end
+  end
 end
