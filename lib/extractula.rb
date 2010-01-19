@@ -8,7 +8,7 @@ require 'extractula/extracted_content'
 require 'extractula/extractor'
 
 module Extractula
-  VERSION = "0.0.2"
+  VERSION = "0.0.3"
 
   @extractors = []
 
