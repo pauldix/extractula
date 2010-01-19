@@ -30,7 +30,7 @@ describe "extracting from a YouTube page" do
   end
 
   it "extracts the content" do
-    @extracted_content.content.should == "A Greyhound named Latte at Meadow Woods Dog Park in Orlando, FL.Published in All Animals Magazine."
+    @extracted_content.content.should == "A Greyhound named Latte at Meadow Woods Dog Park in Orlando, FL.  Published in All Animals Magazine."
   end
 
   it "extracts the image url" do
