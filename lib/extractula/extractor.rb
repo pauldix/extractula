@@ -122,18 +122,22 @@ class Extractula::Extractor
           nil
         end
       elsif node.node_name == "br"
-        if node.previous.node_name == "text" && node.next.node_name == "text"
-          text_size = 0
-          parent.children.each do |child|
-            text_size += child.text.strip.size if child.node_name == "text"
-          end
+        begin
+          if node.previous.node_name == "text" && node.next.node_name == "text"
+            text_size = 0
+            parent.children.each do |child|
+              text_size += child.text.strip.size if child.node_name == "text"
+            end
 
-          if text_size > 0
-            {:text_size => text_size, :parent => parent}
+            if text_size > 0
+              {:text_size => text_size, :parent => parent}
+            else
+              nil
+            end
           else
             nil
           end
-        else
+        rescue => e
           nil
         end
       else

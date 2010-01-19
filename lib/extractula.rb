@@ -8,6 +8,8 @@ require 'extractula/extracted_content'
 require 'extractula/extractor'
 
 module Extractula
+  VERSION = "0.0.2"
+
   @extractors = []
 
   def self.add_extractor(extractor_class)
@@ -24,7 +26,7 @@ module Extractula
     extractor = @extractors.detect {|e| e.can_extract? parsed_url, parsed_html} || Extractor
     extractor.new(parsed_url, parsed_html).extract
   end
-  
+
   def self.custom_extractor(config = {})
     klass = Class.new(Extractula::Extractor)
     klass.include(Extractula::OEmbed) if config.delete(:oembed)
