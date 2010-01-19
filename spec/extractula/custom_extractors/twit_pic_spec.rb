@@ -8,7 +8,7 @@ describe Extractula::TwitPic do
     @html = Nokogiri::HTML::Document.new
   end
   
-  it "can extract comics from youtube.com" do
+  it "can extract images from twitpic.com" do
     Extractula::TwitPic.can_extract?(@url, @html).should be_true
   end
   

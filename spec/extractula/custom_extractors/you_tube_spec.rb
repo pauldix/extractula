@@ -6,7 +6,7 @@ describe Extractula::YouTube do
     @html = Nokogiri::HTML::Document.new
   end
   
-  it "can extract comics from youtube.com" do
+  it "can extract videos from youtube.com" do
     Extractula::YouTube.can_extract?(@url, @html).should be_true
   end
   

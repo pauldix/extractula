@@ -8,7 +8,7 @@ describe Extractula::YFrog do
     @html = Nokogiri::HTML::Document.new
   end
   
-  it "can extract comics from youtube.com" do
+  it "can extract images from yfrog.com" do
     Extractula::YFrog.can_extract?(@url, @html).should be_true
   end
   
