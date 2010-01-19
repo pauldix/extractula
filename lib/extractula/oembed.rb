@@ -117,6 +117,10 @@ module Extractula
             @html = @doc['html']
           end
         end
+        
+        def [](field)
+          @doc[field]
+        end
       end
       
     end
