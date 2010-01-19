@@ -42,6 +42,27 @@ describe Extractula::Extractor do
       end
     end    
   end
+  
+  describe "media type" do
+    before do
+      class Thingy < Extractula::Extractor; end
+      @thingy = Thingy.new @url, @html
+    end
+    
+    it "should default to 'text'" do
+      @thingy.media_type.should == 'text'
+    end
+    
+    describe "when set" do
+      before do
+        Thingy.media_type 'video'
+      end
+      
+      it "should be the given media type" do
+        @thingy.media_type.should == 'video'
+      end
+    end
+  end
 end
 
 describe "dom extraction" do

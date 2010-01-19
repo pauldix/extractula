@@ -14,6 +14,11 @@ class Extractula::Extractor
   def self.can_extract? url, html
     @extractable_domain ? @extractable_domain == url.domain : false
   end
+  
+  def self.media_type type = nil
+    @media_type = type if type
+    @media_type
+  end
 
   %w{title content summary image_urls video_embed }.each do |field|
     class_eval <<-EOS
@@ -50,12 +55,17 @@ class Extractula::Extractor
   def extract
     Extractula::ExtractedContent.new({
       :url          => url.url,
+      :media_type   => media_type,
       :title        => title,
       :content      => content,
       :summary      => summary,
       :image_urls   => image_urls,
       :video_embed  => video_embed
     })
+  end
+
+  def media_type
+    self.class.media_type || 'text'
   end
 
   def title

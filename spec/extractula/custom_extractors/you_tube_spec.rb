@@ -10,6 +10,9 @@ describe Extractula::YouTube do
     Extractula::YouTube.can_extract?(@url, @html).should be_true
   end
   
+  it "should have media type 'video'" do
+    Extractula::YouTube.media_type.should == 'video'
+  end
 end
 
 describe "extracting from a YouTube page" do
@@ -33,4 +36,3 @@ describe "extracting from a YouTube page" do
   end
 
 end
-

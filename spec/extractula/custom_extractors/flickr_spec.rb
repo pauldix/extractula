@@ -12,6 +12,9 @@ describe Extractula::Flickr do
     Extractula::Flickr.can_extract?(@url, @html).should be_true
   end
   
+  it "should have media type 'image'" do
+    Extractula::Flickr.media_type.should == 'image'
+  end
 end
 
 describe "extracting from a YouTube page" do
@@ -35,4 +38,3 @@ describe "extracting from a YouTube page" do
   end
 
 end
-

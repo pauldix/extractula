@@ -10,6 +10,9 @@ describe Extractula::DinosaurComics do
     Extractula::DinosaurComics.can_extract?(@url, @html).should be_true
   end
   
+  it "should have media type 'image'" do
+    Extractula::DinosaurComics.media_type.should == 'image'
+  end
 end
 
 describe "extracting from a Dinosaur Comics page" do
@@ -31,4 +34,3 @@ describe "extracting from a Dinosaur Comics page" do
   end
 
 end
-
