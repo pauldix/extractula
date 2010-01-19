@@ -82,7 +82,11 @@ class Extractula::Extractor
 
   def image_urls
     if image_urls_path
-      html.search(image_urls_path).collect { |img| img['src'].strip }
+      html.search(image_urls_path).collect do |img|
+        src = img['src'].strip
+        src = "#{@url.scheme}://#{@url.host}#{src}" if src.start_with?('/')
+        src
+      end
     end
   end
 
