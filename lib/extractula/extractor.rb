@@ -22,10 +22,11 @@ class Extractula::Extractor
 
   %w{title content summary image_urls video_embed }.each do |field|
     class_eval <<-EOS
-      def self.#{field}_path(path = nil, attrib = nil)
+      def self.#{field}_path(path = nil, attrib = nil, &block)
         if path
           @#{field}_path = path
           @#{field}_attr = attrib || :text
+          @#{field}_block = block
         end
         @#{field}_path
       end
@@ -34,6 +35,11 @@ class Extractula::Extractor
         @#{field}_attr = attrib if attrib
         @#{field}_attr
       end
+      
+      def self.#{field}_block(&block)
+        @#{field}_block = block if block
+        @#{field}_block
+      end
 
       def #{field}_path
         self.class.#{field}_path
@@ -41,6 +47,10 @@ class Extractula::Extractor
 
       def #{field}_attr
         self.class.#{field}_attr
+      end
+      
+      def #{field}_block
+        self.class.#{field}_block
       end
     EOS
   end
@@ -69,15 +79,15 @@ class Extractula::Extractor
   end
 
   def title
-    content_at(title_path, title_attr) || content_at("//title")
+    content_at(title_path, title_attr, title_block) || content_at("//title")
   end
 
   def content
-    content_at(content_path, content_attr) || extract_content
+    content_at(content_path, content_attr, content_block) || extract_content
   end
 
   def summary
-    content_at(summary_path, summary_attr)
+    content_at(summary_path, summary_attr, summary_block)
   end
 
   def image_urls
@@ -98,10 +108,11 @@ class Extractula::Extractor
 
   private
 
-  def content_at(path, attrib = :text)
+  def content_at(path, attrib = :text, block = nil)
     if path
       if node = html.at(path)
-        attrib == :text ? node.text.strip : node[attrib].strip
+        value = attrib == :text ? node.text.strip : node[attrib].strip
+        block ? block.call(value) : value
       end
     end
   end

@@ -63,6 +63,20 @@ describe Extractula::Extractor do
       end
     end
   end
+  
+  describe "post-processing blocks on attribute paths" do
+    before do
+      class Thingy < Extractula::Extractor; end
+      Thingy.title_path('#element') { |t| t.reverse }
+      node = stub('fake XML node', :text => 'This text is frontways.')
+      @html.stub!(:at).with('#element').and_return(node)
+      @thing = Thingy.new @url, @html
+    end
+    
+    it "should run yield the value to the block" do
+      @thing.title.should == '.syawtnorf si txet sihT'
+    end
+  end
 end
 
 describe "dom extraction" do
