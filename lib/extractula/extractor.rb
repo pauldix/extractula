@@ -12,9 +12,13 @@ class Extractula::Extractor
   end
 
   def self.can_extract? url, html
-    @extractable_domain ? @extractable_domain == url.domain : false
+    if @extractable_domain.is_a? Regexp
+      url.host + url.path =~ @extractable_domain
+    else
+      @extractable_domain ? @extractable_domain == url.domain : false
+    end
   end
-  
+
   def self.media_type type = nil
     @media_type = type if type
     @media_type
