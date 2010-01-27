@@ -2,10 +2,10 @@
 
 Gem::Specification.new do |s|
   s.name = %q{extractula}
-  s.version = "0.0.4"
+  s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Paul Dix"]
+  s.authors = ["Paul Dix", "Sander Hartlage"]
   s.date = %q{2009-12-18}
   s.email = %q{paul@pauldix.net}
   s.files = [
@@ -31,7 +31,8 @@ Gem::Specification.new do |s|
     "spec/test-files/ustream-new-years-eve.html",
     "spec/test-files/weather-channel-marriage-proposal-touching-with-a-chance-of-viral-status-video.html",
     "spec/test-files/nytimes.html",
-    "spec/test-files/nytimes_story.html"]
+    "spec/test-files/nytimes_story.html",
+    "spec/test-files/script_tag_remove_case.html"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/pauldix/extractula}
   s.require_paths = ["lib"]
@@ -44,10 +45,13 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, ["> 0.0.0"])
+      s.add_runtime_dependency(%q<loofah>, ["> 0.4.2"])
     else
       s.add_dependency(%q<nokogiri>, ["> 0.0.0"])
+      s.add_dependency(%q<loofah>, ["> 0.4.2"])
     end
   else
     s.add_dependency(%q<nokogiri>, ["> 0.0.0"])
+    s.add_dependency(%q<loofah>, ["> 0.4.2"])
   end
 end

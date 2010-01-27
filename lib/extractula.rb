@@ -3,12 +3,13 @@ $LOAD_PATH.unshift(File.dirname(__FILE__)) unless $LOAD_PATH.include?(File.dirna
 module Extractula; end
 
 require 'nokogiri'
+require 'loofah'
 require 'domainatrix'
 require 'extractula/extracted_content'
 require 'extractula/extractor'
 
 module Extractula
-  VERSION = "0.0.4"
+  VERSION = "0.0.5"
 
   @extractors = []
 
