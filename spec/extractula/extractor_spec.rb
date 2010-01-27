@@ -3,16 +3,16 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Extractula::Extractor do
-  
+
   before do
     @url  = Domainatrix.parse("http://www.website.com/")
     @html = Nokogiri::HTML::Document.new
   end
-  
+
   it "should not be able to extract anything" do
     Extractula::Extractor.can_extract?(@url, @html).should be_false
   end
-  
+
   describe "extracting" do
     it "should give an empty ExtractedContent object" do
       content = Extractula::Extractor.new(@url, @html).extract
@@ -22,7 +22,7 @@ describe Extractula::Extractor do
       content.video_embed.should be_nil
     end
   end
-  
+
   describe "when subclassing" do
     before do
       class Thingy < Extractula::Extractor; end
@@ -31,33 +31,39 @@ describe Extractula::Extractor do
     it "should add the subclass as an extractor to the Extractula module" do
       Extractula.instance_variable_get(:@extractors).should include(Thingy)
     end
-    
+
     describe "setting the domain" do
       before do
         Thingy.domain 'website'
       end
-      
+
       it "should be able to extract urls from that domain" do
         Thingy.can_extract?(@url, @html).should be_true
       end
-    end    
+
+      it "can extract urls based on a domain regex" do
+        class Foo < Extractula::Extractor; domain /www\.youtube\.com\/watch/; end
+        Foo.can_extract?(Domainatrix.parse("http://www.youtube.com/watch?v=31g0YE61PLQ&feature=rec-fresh+div-r-1-HM"), nil).should be_true
+        Foo.can_extract?(Domainatrix.parse("http://www.youtube.com/about.html"), nil).should_not be_true
+      end
+    end
   end
-  
+
   describe "media type" do
     before do
       class Thingy < Extractula::Extractor; end
       @thingy = Thingy.new @url, @html
     end
-    
+
     it "should default to 'text'" do
       @thingy.media_type.should == 'text'
     end
-    
+
     describe "when set" do
       before do
         Thingy.media_type 'video'
       end
-      
+
       it "should be the given media type" do
         @thingy.media_type.should == 'video'
       end
