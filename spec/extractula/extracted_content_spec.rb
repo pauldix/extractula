@@ -23,6 +23,10 @@ describe "extracted content" do
       extracted = Extractula::ExtractedContent.new(:content => "<p>I've been quietly working on Typhoeus for the last few months. With the help of <a href=\"http://metaclass.org/\">Wilson Bilkovich</a> and <a href=\"http://github.com/dbalatero\">David Balatero</a> I've finished what I think is a significant improvement to the library. The new interface removes all the magic and opts instead for clarity.</p>\n<p>It's really slick and includes improved stubing support, caching, memoization, and (of course) parallelism. The <a href=\"http://github.com/pauldix/typhoeus/\">Typhoeus readme</a> highlights all of the awesomeness. It should be noted that the old interface of including Typhoeus into classes and defining remote methods has been deprecated. I'll be removing that sometime in the next six months.</p>\n<p>In addition to thanking everyone using the library and everyone contributing, I should also thank my employer kgbweb. If you're a solid Rubyist that likes parsing, crawling, and stuff, or a machine learning guy, or a Solr/Lucene/indexing bad ass, let me know. We need you and we're doing some crazy awesome stuff.</p>")
       extracted.summary.should == "I've been quietly working on Typhoeus for the last few months. With the help of Wilson Bilkovich and David Balatero I've finished what I think is a significant improvement to the library. The new interface removes all the magic and opts instead for clarity."
     end
+
+    it "cleans script tags and their content" do
+      Extractula::ExtractedContent.new(:content => read_test_file("script_tag_remove_case.html")).summary.should == "Obama to meet with House Republicans By Perry Bacon Jr. Washington Post Staff Writer Tuesday, January 26, 2010; A13 President Obama will meet Friday with perhaps his harshest critics outside of Fox News headquarters: the House Republicans."
+    end
   end
 
   describe "image_urls" do

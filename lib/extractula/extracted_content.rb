@@ -7,14 +7,13 @@ class Extractula::ExtractedContent
 
   def summary
     return @summary if @summary
-    @content_doc ||= Nokogiri::HTML(@content)
-    content_fragment = @content_doc.inner_text.slice(0, 350)
+    content_fragment = Loofah.scrub_document(@content, :prune).text.gsub("\\n", " ").gsub(/\s+/, " ").slice(0, 350).strip
     sentence_break = content_fragment.rindex(/\?|\.|\!|\;/)
     if sentence_break
       @summary = content_fragment.slice(0, sentence_break + 1)
       @summary
     else
-      @summary = content_fragment
+      @summary = content_fragment.gsub(/\s\w+$/, "...")
     end
   end
 
