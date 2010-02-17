@@ -20,6 +20,16 @@ module Extractula
       end
     end
     
+    def self.max_width(width = nil)
+      @global_oembed_max_width = width if width
+      @global_oembed_max_width
+    end
+    
+    def self.max_height(height = nil)
+      @global_oembed_max_height = height if height
+      @global_oembed_max_height
+    end
+    
     module ClassMethods 
       def oembed_endpoint(url = nil)
         if url
@@ -36,12 +46,12 @@ module Extractula
       
       def oembed_max_width(width = nil)
         @oembed_max_width = width if width
-        @oembed_max_width
+        @oembed_max_width || OEmbed.max_width
       end
       
       def oembed_max_height(height = nil)
         @oembed_max_height = height if height
-        @oembed_max_height
+        @oembed_max_height || OEmbed.max_height
       end
       
       def oembed_format_param_required?
