@@ -96,23 +96,31 @@ class Extractula::Extractor
 
   def image_urls
     if image_urls_path
-      html.search(image_urls_path).collect do |img|
-        src = img['src'].strip
-        src = "#{@url.scheme}://#{@url.host}#{src}" if src.start_with?('/')
-        src
-      end
+      image_srcs_from html.search(image_urls_path)
     end
   end
 
   def video_embed
     if video_embed_path
-      html.search(video_embed_path).collect { |embed| embed.to_html }.first
+      embed_code_from html.search(video_embed_path)
     end
   end
 
   private
 
-  def content_at(path, attrib = :text, block = nil)
+  def image_srcs_from nodeset
+    nodeset.collect { |img| unrelativize img['src'].strip }
+  end
+
+  def embed_code_from nodeset
+    nodeset.collect { |embed| embed.to_html }.first
+  end
+  
+  def unrelativize path
+    path.start_with?('/') ? "#{@url.scheme}://#{@url.host}#{path}" : path
+  end
+
+  def content_at path, attrib = :text, block = nil
     if path
       if node = html.at(path)
         value = attrib == :text ? node.text.strip : node[attrib].strip
