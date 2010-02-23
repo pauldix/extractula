@@ -51,5 +51,38 @@ describe "extractula" do
     end
     Extractula.extract "http://pauldix.net", "some html"
     Extractula.last_extractor.should == custom_extractor
+    Extractula.remove_extractor custom_extractor
+  end
+  
+  describe "defining an inline custom extractor" do
+    it "takes a block form definition" do
+      klass = Extractula.custom_extractor do
+        domain        'pauldix'
+        content_path  '#content'
+      end
+      Extractula.extractors.should include(klass)
+      Extractula.remove_extractor klass
+    end
+    
+    it "takes a hash form definition" do
+      klass = Extractula.custom_extractor :domain => 'pauldix', :content_path => '#content'
+      Extractula.extractors.should include(klass)
+      Extractula.remove_extractor klass
+    end
+    
+    it "can be named" do
+      klass = Extractula.custom_extractor :PaulDix do
+        domain        'pauldix'
+        content_path  '#content'
+      end
+      Extractula.const_defined?(:PaulDix).should be_true
+      Extractula.remove_extractor klass
+    end
+    
+    it "can contain the OEmbed module" do
+      klass = Extractula.custom_extractor :oembed => true
+      klass.should include(Extractula::OEmbed)
+      Extractula.remove_extractor klass
+    end
   end
 end

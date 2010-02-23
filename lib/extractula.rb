@@ -15,7 +15,7 @@ module Extractula
 
   class << self
     
-    attr_reader :last_extractor
+    attr_reader :extractors, :last_extractor
     
     def add_extractor(extractor_class)
       @extractors << extractor_class
@@ -35,10 +35,17 @@ module Extractula
       @last_extractor = @extractors.detect {|e| e.can_extract? url, html} || Extractor
     end
 
-    def custom_extractor(config = {})
-      klass = Class.new(Extractula::Extractor)
-      klass.include(Extractula::OEmbed) if config.delete(:oembed)
-      config.each { |option, args| klass.__send__(option, *args) }
+    def custom_extractor(*args, &block)
+      config      = args.last.is_a?(Hash) ? args.pop : {}
+      klass_name  = args[0]
+      if block_given?
+        klass = Class.new Extractula::Extractor, &block
+      else
+        klass = Class.new Extractula::Extractor
+        klass.__send__ :include, Extractula::OEmbed if config.delete(:oembed)
+        config.each { |option, args| klass.__send__(option, *args) }
+      end
+      const_set klass_name, klass if klass_name
       klass
     end
   end
