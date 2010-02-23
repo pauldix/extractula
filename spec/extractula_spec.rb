@@ -12,7 +12,7 @@ describe "extractula" do
       end
     end
 
-    Extractula.add_extractor custom_extractor
+    # Extractula.add_extractor custom_extractor
     content = Extractula.extract("http://pauldix.net", "some html")
     content.url.should == "custom extractor url"
     content.summary.should == "my custom extractor"
@@ -30,7 +30,7 @@ describe "extractula" do
       end
     end
 
-    Extractula.add_extractor custom_extractor
+    # Extractula.add_extractor custom_extractor
     content = Extractula.extract("http://pauldix.net", "some html")
     content.url.should_not == "this url"
     content.summary.should_not == "this summary"
@@ -41,5 +41,15 @@ describe "extractula" do
     result = Extractula.extract("http://pauldix.net", "")
     result.should be_a Extractula::ExtractedContent
     result.url.should == "http://pauldix.net"
+  end
+  
+  it "saves a reference to the last extractor used" do
+    custom_extractor = Class.new(Extractula::Extractor) do
+      def self.can_extract? url, html
+        true
+      end
+    end
+    Extractula.extract "http://pauldix.net", "some html"
+    Extractula.last_extractor.should == custom_extractor
   end
 end

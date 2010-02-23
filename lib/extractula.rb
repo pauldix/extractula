@@ -13,25 +13,33 @@ module Extractula
 
   @extractors = []
 
-  def self.add_extractor(extractor_class)
-    @extractors << extractor_class
-  end
+  class << self
+    
+    attr_reader :last_extractor
+    
+    def add_extractor(extractor_class)
+      @extractors << extractor_class
+    end
 
-  def self.remove_extractor(extractor_class)
-    @extractors.delete extractor_class
-  end
+    def remove_extractor(extractor_class)
+      @extractors.delete extractor_class
+    end
 
-  def self.extract(url, html)
-    parsed_url = Domainatrix.parse(url)
-    parsed_html = Nokogiri::HTML(html)
-    extractor = @extractors.detect {|e| e.can_extract? parsed_url, parsed_html} || Extractor
-    extractor.new(parsed_url, parsed_html).extract
-  end
+    def extract(url, html)
+      parsed_url, parsed_html = Domainatrix.parse(url), Nokogiri::HTML(html)
+      extractor = select_extractor parsed_url, parsed_html
+      extractor.new(parsed_url, parsed_html).extract
+    end
 
-  def self.custom_extractor(config = {})
-    klass = Class.new(Extractula::Extractor)
-    klass.include(Extractula::OEmbed) if config.delete(:oembed)
-    config.each { |option, args| klass.__send__(option, *args) }
-    klass
+    def select_extractor url, html
+      @last_extractor = @extractors.detect {|e| e.can_extract? url, html} || Extractor
+    end
+
+    def custom_extractor(config = {})
+      klass = Class.new(Extractula::Extractor)
+      klass.include(Extractula::OEmbed) if config.delete(:oembed)
+      config.each { |option, args| klass.__send__(option, *args) }
+      klass
+    end
   end
 end
