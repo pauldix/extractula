@@ -86,11 +86,15 @@ module Extractula
       end
       
       def oembed_request
-        request = "#{oembed_endpoint}?url=#{url.url}"
+        request = "#{oembed_endpoint}?url=#{oembed_request_url}"
         request += "&format=json" if oembed_format_param_required?
         request += "&maxwidth=#{oembed_max_width}" if oembed_max_width
         request += "&maxheight=#{oembed_max_height}" if oembed_max_height
         request
+      end
+      
+      def oembed_request_url
+        url.url
       end
       
       def title
