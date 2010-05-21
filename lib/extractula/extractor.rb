@@ -130,7 +130,11 @@ class Extractula::Extractor
   end
 
   def extract_content
-    candidate_nodes = html.search("//div|//p|//br").collect do |node|
+    fragment = content_node ? content_node.inner_html.strip : ""
+  end
+  
+  def candidate_nodes
+    @candidate_nodes ||= html.search("//div|//p|//br").collect do |node|
       parent = node.parent
       if node.node_name == 'div'
         text_size = calculate_children_text_size(parent, "div")
@@ -170,9 +174,23 @@ class Extractula::Extractor
       else
         nil
       end
-    end.compact.uniq
+    end.compact.uniq    
+  end
 
-    fragment = candidate_nodes.detect {|n| n[:text_size] > 140}[:parent].inner_html.strip rescue ""
+  def content_node_selector
+    Proc.new { |n| n[:text_size] > content_node_text_size_cutoff }
+  end
+  
+  def content_node_text_size_cutoff
+    140
+  end
+  
+  def content_node
+    @content_node ||= begin
+      if node = candidate_nodes.detect(&content_node_selector)
+        node[:parent]
+      end
+    end
   end
 
   def calculate_children_text_size(parent, node_type)
