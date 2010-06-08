@@ -130,7 +130,7 @@ class Extractula::Extractor
   end
 
   def extract_content
-    fragment = content_node ? content_node.inner_html.strip : ""
+    content_node ? content_node.inner_html.strip : ""
   end
   
   def candidate_nodes
