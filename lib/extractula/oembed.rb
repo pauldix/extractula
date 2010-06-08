@@ -98,15 +98,15 @@ module Extractula
       end
       
       def title
-        oembed.title
+        oembed ? oembed.title : super
       end
       
       def image_urls
-        [ oembed.url ] if oembed.type == 'photo'
+        [ oembed.url ] if oembed && oembed.type == 'photo'
       end
       
       def video_embed
-        oembed.html
+        oembed.html if oembed
       end
     end
     
